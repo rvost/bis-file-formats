@@ -142,7 +142,7 @@ namespace BIS.P3D.ODOL
 		public EmbeddedMaterial[] Materials { get; }
         public TrackedArray<int> PointToVertex { get; }
         public TrackedArray<int> VertexToPoint { get; }
-		internal Polygons Polygons { get; }
+		public Polygons Polygons { get; }
 		public Section[] Sections { get; }
 		public NamedSelection[] NamedSelections { get; set; }
         public Tuple<string, string>[] NamedProperties { get; }

@@ -2,7 +2,7 @@
 
 namespace BIS.P3D.ODOL
 {
-    internal class Polygons
+    public class Polygons
     {
         public Polygons(BinaryReaderEx input, int version)
         {

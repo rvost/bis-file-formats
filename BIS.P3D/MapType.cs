@@ -38,6 +38,9 @@
 		Rocks,
 		PowerLines,
 		RailWay,
+		SolarPowerPlant,
+		WavePowerPlant,
+		WindPowerPlant,
 		Unkwown = 255
     }
 }

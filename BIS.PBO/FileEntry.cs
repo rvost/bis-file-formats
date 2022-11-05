@@ -34,7 +34,7 @@ namespace BIS.PBO
 
         public void Read(BinaryReaderEx input)
         {
-            FileName = input.ReadAsciiz();
+            FileName = input.ReadUTF8z();
             CompressedMagic = input.ReadInt32();
             UncompressedSize = input.ReadInt32();
             StartOffset = input.ReadInt32();

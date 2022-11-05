@@ -251,6 +251,11 @@ $@"{classHead}
         {
             return $"{new string(' ', indentionLevel * 4)}{Name}={Value.ToString()};";
         }
+
+        public T Get<T>()
+        {
+            return Value.Get<T>();
+        }
     }
 
     public class ParamExternClass : ParamEntry
@@ -374,9 +379,9 @@ $@"{classHead}
             return Value.ToString();
         }
 
-        internal T Get<T>()
+        public T Get<T>()
         {
-            return (T)Convert.ChangeType(Value, typeof(T));
+            return (T)Convert.ChangeType(Value, typeof(T), CultureInfo.InvariantCulture);
         }
     }
     #endregion

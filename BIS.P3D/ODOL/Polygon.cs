@@ -2,7 +2,7 @@
 
 namespace BIS.P3D.ODOL
 {
-    internal class Polygon
+    public class Polygon
     {
         public Polygon(BinaryReaderEx input, int version)
         {
@@ -16,7 +16,6 @@ namespace BIS.P3D.ODOL
                 VertexIndices = input.ReadArrayBase(i => (int)i.ReadUInt16(), length);
             }
         }
-
         public int[] VertexIndices { get; }
 
         internal void Write(BinaryWriterEx output, int version)

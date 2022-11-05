@@ -29,7 +29,7 @@ namespace BIS.P3D.MLOD
             }
             else
             {
-                MapType = MapType.Unkwown;
+                MapType = MapType.Hide;
             }
             pair = mLOD.Lods.SelectMany(l => l.NamedProperties.Where(n => string.Equals(n.Item1, "class", StringComparison.OrdinalIgnoreCase))).FirstOrDefault();
             if (pair != null)
@@ -57,7 +57,7 @@ namespace BIS.P3D.MLOD
                 case "rock":
                     return MapType.Rock;
             }
-            return MapType.Unkwown;
+            return MapType.Hide;
         }
 
         public Vector3P BboxMin { get; }
