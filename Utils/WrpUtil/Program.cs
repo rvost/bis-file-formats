@@ -116,7 +116,7 @@ namespace WrpUtil
                 switch(items[0].ToUpperInvariant())
                 {
                     case "REPLACE":
-                        Replace(editable, items[1], items[2], items.Length > 3 ? items[3] : null, opts.FixAltitude);
+                        Replace(editable, items[1], items[2], items.Length > 3 ? items[3] : null, items.Length > 4 ? items[4] : null, items.Length > 5 ? items[5] : null, opts.FixAltitude);
                         break;
                     case "REDUCE":
                         Reduce(editable, items[1], double.Parse(items[2], CultureInfo.InvariantCulture));
@@ -230,20 +230,34 @@ namespace WrpUtil
             }
         }
 
-        private static void Replace(EditableWrp editable, string initial, string replacement, string altShiftString, bool autoFixAltitude)
+        private static void Replace(EditableWrp editable, string initial, string replacement, string altShiftString, string xShiftString, string zShiftString, bool autoFixAltitude)
         {
             float altShift = 0;
+
+            float xShift = 0;
+            if (!string.IsNullOrEmpty(xShiftString))
+            {
+                float.TryParse(xShiftString, NumberStyles.Any, CultureInfo.InvariantCulture, out xShift);
+            }
+
+            float zShift = 0;
+            if (!string.IsNullOrEmpty(zShiftString))
+            {
+                float.TryParse(zShiftString, NumberStyles.Any, CultureInfo.InvariantCulture, out zShift);
+            }
+
             if ((string.IsNullOrEmpty(altShiftString) || !float.TryParse(altShiftString, NumberStyles.Any, CultureInfo.InvariantCulture, out altShift)) && autoFixAltitude)
             {
                 var oldModel = StreamHelper.Read<P3D>(Path.Combine("P:", initial)).ModelInfo;
                 var newModel = StreamHelper.Read<P3D>(Path.Combine("P:", replacement)).ModelInfo;
                 altShift = oldModel.BboxMin.Y - newModel.BboxMin.Y;
-                Console.WriteLine($"  '{initial}'->'{replacement}' altShift={altShift:0.00} (computed)");
+                Console.WriteLine($"  '{initial}'->'{replacement}' altShift={altShift:0.00} (computed), xShift={xShift:0.00}, zShift={zShift:0.00}");
             }
             else
             {
-                Console.WriteLine($"  '{initial}'->'{replacement}' altShift={altShift:0.00}");
+                Console.WriteLine($"  '{initial}'->'{replacement}' altShift={altShift:0.00}, xShift={xShift:0.00}, zShift={zShift:0.00}");
             }
+
             var changes = 0;
             foreach (var obj in editable.Objects)
             {
@@ -261,7 +275,14 @@ namespace WrpUtil
                             obj.Transform.Altitude += altShift;
                         }
                     }
+                    if (xShift != 0 || zShift != 0)
+                    {
+                        var translate = Vector3.Transform(new Vector3(xShift, 0, zShift), obj.Transform.Matrix);
+                        obj.Transform.TranslateX = translate.X;
+                        obj.Transform.TranslateZ = translate.Z;
+                    }
                     changes++;
+                    // Console.WriteLine($"  -> {Math.Truncate(obj.Transform.Matrix.M41)},{Math.Truncate(obj.Transform.Matrix.M43)}");
                 }
             }
             Console.WriteLine($"  -> {changes} changes");

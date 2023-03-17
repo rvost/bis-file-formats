@@ -65,6 +65,24 @@ namespace BIS.Core.Math
             set { matrix.M42 = value; }
         }
 
+        public float TranslateX
+        {
+            get { return matrix.M41; }
+            set { matrix.M41 = value; }
+        }
+
+        public float TranslateY
+        {
+            get { return matrix.M42; }
+            set { matrix.M42 = value; }
+        }
+
+        public float TranslateZ
+        {
+            get { return matrix.M43; }
+            set { matrix.M43 = value; }
+        }
+
         public float AltitudeScale
         {
             get { return matrix.M22; }
