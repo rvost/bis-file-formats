@@ -21,9 +21,40 @@ REPLACE;CA\Structures\House\HouseV2\HouseV2_03_dam.p3d;A3\Structures_F_Enoch\Ind
 REPLACE;Ca\buildings2\Church_01\Church_01.p3d;A3\Structures_F_Enoch\Cultural\Church_05\Church_05_F.p3d;-0.16;0;0
 REPLACE;CA\Structures\House\HouseV\HouseV_3I2.p3d;A3\Structures_F_Enoch\Civilian\Houses\House_1W09_F.p3d;0;0.675;0
 REPLACE;ca\buildings2\Misc_WaterStation\Misc_WaterStation.p3d;A3\Structures_F_Enoch\Industrial\Houses\WaterStation_01_F.p3d;-0.5;0;2.245
+REPLACE;ca\structures\house\housev2\housev2_05.p3d;a3\structures_f_enoch\civilian\houses\house_1w12_f.p3d;-0.032;-2.023;2.361
+REPLACE;ca\structures\ind_sawmill\ind_sawmill.p3d;a3\structures_f_enoch\industrial\sawmills\sawmill_01_f.p3d;-0.073;1.102;-2.411
+REPLACE;ca\structures\house\housev2\housev2_03.p3d;a3\structures_f_enoch\industrial\houses\factory_02_f.p3d;0.000;0.412;-0.725
+REPLACE;ca\buildings2\shed_small\shed_w03.p3d;a3\structures_f_enoch\civilian\sheds\shed_11_f.p3d;0.214;0.005;-2.070
+REPLACE;ca\buildings2\shed_small\shed_w01.p3d;a3\structures_f_enoch\civilian\sheds\shed_09_f.p3d;0.200;0.000;-2.147
+REPLACE;ca\buildings2\shed_small\shed_w02.p3d;a3\structures_f_enoch\civilian\sheds\shed_10_f.p3d;0.203;-2.110;0.000
+REPLACE;ca\structures\shed\shed_small\shed_w4.p3d;a3\structures_f_enoch\civilian\sheds\shed_14_f.p3d;0.000;0.022;-2.152
+REPLACE;ca\buildings2\farm_wtower\farm_wtower.p3d;a3\structures_f_enoch\industrial\farms\watertower_02_f.p3d;0.000;0.000;0.000
 
-Untested below
-TODO-REPLACE;CA\Structures\Mil\Mil_Guardhouse_no_interior_CUP.p3d;A3\Structures_F_Enoch\Military\Barracks\GuardHouse_02_F.p3d
-TODO-REPLACE;ca\Structures_E\Mil\Mil_Guardhouse_no_interior_EP1_CUP.p3d;A3\Structures_F_Enoch\Military\Barracks\GuardHouse_02_F.p3d
-TODO-REPLACE;ca\structures\House\Church_02\Church_02a.p3d;a3\Structures_F_Enoch\Cultural\OrthodoxChurches\OrthodoxChurch_02_F.p3d
-TODO-REPLACE;ca\structures\House\Church_02\Church_02.p3d;a3\Structures_F_Enoch\Cultural\OrthodoxChurches\OrthodoxChurch_02_F.p3d
+Warning: Untested below
+REPLACE;ca\structures\mil\mil_guardhouse_no_interior_cup.p3d;a3\structures_f_enoch\military\barracks\guardhouse_02_f.p3d;-0.092;-0.200;0
+REPLACE;ca\structures_e\mil\mil_guardhouse_no_interior_ep1_cup.p3d;a3\structures_f_enoch\military\barracks\guardhouse_02_f.p3d;-0.092;-0.645;0
+REPLACE;ca\structures\house\church_02\church_02a.p3d;a3\structures_f_enoch\cultural\orthodoxchurches\orthodoxchurch_02_f.p3d;0;-2.480;0.184
+REPLACE;ca\structures\house\church_02\church_02.p3d;a3\structures_f_enoch\cultural\orthodoxchurches\orthodoxchurch_02_f.p3d;-0.105;-2.480;0.184
+
+Visual update only:
+REPLACE-XXX;ca\structures\house\housev2\housev2_02_interier.p3d;a3\structures_f_enoch\civilian\houses\house_2b02_f.p3d;0.000;0.000;-0.114
+REPLACE-XXX;ca\structures\barn_w\barn_w_02.p3d;a3\structures_f_enoch\industrial\farms\barn_03_small_f.p3d;-0.161;1.246;-0.304
+REPLACE-XXX;ca\structures\barn_w\barn_w_01.p3d;a3\structures_f_enoch\industrial\farms\barn_03_large_f.p3d;0.000;0.126;-0.424
+REPLACE-XXX;ca\structures\barn_w\barn_w_01_dam.p3d;a3\structures_f_enoch\industrial\farms\barn_03_large_f.p3d;0.000;0.126;-0.424
+REPLACE-XXX;ca\buildings2\farm_cowshed\farm_cowshed_a.p3d;a3\structures_f_enoch\industrial\farms\cowshed_01_a_f.p3d;-0.034;0.389;-0.192
+REPLACE-XXX;ca\buildings2\farm_cowshed\farm_cowshed_b.p3d;a3\structures_f_enoch\industrial\farms\cowshed_01_b_f.p3d;-0.008;0.014;0.000
+REPLACE-XXX;ca\buildings2\farm_cowshed\farm_cowshed_c.p3d;a3\structures_f_enoch\industrial\farms\cowshed_01_c_f.p3d;0.048;0.019;2.218
+REPLACE-XXX;ca\buildings2\farm_cowshed\farm_cowshed_a_dam.p3d;a3\structures_f_enoch\industrial\farms\cowshed_01_a_f.p3d;0.590;-0.478;-0.256
+REPLACE-XXX;ca\buildings2\farm_cowshed\farm_cowshed_b_dam.p3d;a3\structures_f_enoch\industrial\farms\cowshed_01_b_f.p3d;-0.047;0.014;0.066
+REPLACE-XXX;ca\buildings2\farm_cowshed\farm_cowshed_c_dam.p3d;a3\structures_f_enoch\industrial\farms\cowshed_01_c_f.p3d;0.078;0.032;2.235
+REPLACE-XXX;ca\structures_pmc\buildings\ruins\farm_cowshed\ruin_cowshed_a_pmc.p3d;a3\structures_f_enoch\industrial\farms\cowshed_01_a_f.p3d;0.590;-0.478;-0.256
+REPLACE-XXX;ca\structures_pmc\buildings\ruins\farm_cowshed\ruin_cowshed_b_pmc.p3d;a3\structures_f_enoch\industrial\farms\cowshed_01_b_f.p3d;-0.047;0.014;0.066
+REPLACE-XXX;ca\structures_pmc\buildings\ruins\farm_cowshed\ruin_cowshed_c_pmc.p3d;a3\structures_f_enoch\industrial\farms\cowshed_01_c_f.p3d;0.078;0.032;2.235
+REPLACE-XXX;ca\structures\rail\rail_station_big\rail_station_big.p3d;a3\structures_f_enoch\infrastructure\railways\rail_station_big_f.p3d;-0.016;-0.013;-0.050
+REPLACE-XXX;ca\misc\seno_balik.p3d;a3\structures_f_enoch\industrial\agriculture\haybale_01_f.p3d;0.000;0.000;0.000
+REPLACE-XXX;ca\structures\shed_ind\shed_ind02.p3d;a3\structures_f_enoch\industrial\sheds\industrialshed_01_f.p3d;0.003;-0.206;0.313
+
+Warning: Size differs (6m smaller), needs manual checking
+REPLACE-XXX;ca\buildings2\ind_cementworks\ind_pec\ind_pec_03.p3d;a3\structures_f_enoch\industrial\cementworks\cementworks_01_brick_f.p3d;-0.497;-2.934;2.783
+REPLACE-XXX;ca\buildings2\ind_cementworks\ind_pec\ind_pec_03b.p3d;a3\structures_f_enoch\industrial\cementworks\cementworks_01_grey_f.p3d;-0.492;-2.709;2.774
+REPLACE-XXX;ca\buildings2\ind_cementworks\ind_pec\ind_pec_03a.p3d;a3\structures_f_enoch\industrial\cementworks\cementworks_01_brick_f.p3d;-0.497;-2.934;2.783
