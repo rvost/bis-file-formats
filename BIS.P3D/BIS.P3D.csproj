@@ -3,16 +3,17 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>BIS.Formats.P3D</PackageId>
     <Authors>Braini01</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <RepositoryUrl>https://github.com/Braini01/bis-file-formats</RepositoryUrl>
+    <RepositoryUrl>https://github.com/rvost/bis-file-formats</RepositoryUrl>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <EmbedAllSources>true</EmbedAllSources>
+    <DebugType>Embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <None Include="..\LICENSE" Pack="true" PackagePath=""/>
   </ItemGroup>
 
   <ItemGroup>

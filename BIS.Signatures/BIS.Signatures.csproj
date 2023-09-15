@@ -3,6 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>11.0</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>BIS.Formats.Core</PackageId>
+    <Authors>rvost</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/rvost/bis-file-formats</RepositoryUrl>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <EmbedAllSources>true</EmbedAllSources>
+    <DebugType>Embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
