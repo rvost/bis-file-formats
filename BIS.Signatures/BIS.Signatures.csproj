@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>11.0</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageId>BIS.Formats.Core</PackageId>
+    <PackageId>BIS.Formats.Signatures</PackageId>
     <Authors>rvost</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/rvost/bis-file-formats</RepositoryUrl>

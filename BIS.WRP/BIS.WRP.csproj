@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageId>BIS.Formats.Core</PackageId>
+    <PackageId>BIS.Formats.WRP</PackageId>
     <Authors>Braini01, GrueArbre</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/rvost/bis-file-formats</RepositoryUrl>
