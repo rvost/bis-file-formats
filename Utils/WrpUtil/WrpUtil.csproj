@@ -27,6 +27,9 @@ Forbidden by APL-ND, Bohemia Interactive EULA.</Description>
     <None Update="cup-to-enoch.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="winter.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
