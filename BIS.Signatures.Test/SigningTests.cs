@@ -50,7 +50,7 @@ namespace BIS.Signatures.Test
         [Fact]
         public void CanVerifyV3()
         {
-            var pubKey = v3.ToPublicKey();
+            var pubKey = v3.PublicKey;
             var res = Signing.Verify(pubKey, v3, pbo);
 
             Assert.True(res);
@@ -59,7 +59,7 @@ namespace BIS.Signatures.Test
         [Fact]
         public void CanVerifyV2()
         {
-            var pubKey = v2.ToPublicKey();
+            var pubKey = v2.PublicKey;
             var res = Signing.Verify(pubKey, v2, pbo);
 
             Assert.True(res);

@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Pbo = BIS.PBO.PBO;
 
-namespace BIS.Signatures
+namespace BIS.Signatures.Utils
 {
     internal static class PboUtils
     {
@@ -96,8 +96,6 @@ namespace BIS.Signatures
                 default:
                     throw new InvalidOperationException("Invalid BiSign version");
             }
-
-            
         }
     }
 }

@@ -15,8 +15,6 @@ namespace BIS.Signatures.Test
 
             Assert.NotNull(key);
             Assert.Equal("Test", key.Name);
-            Assert.Equal(BiPrivateKey.LENGTH, key.Length);
-            Assert.Equal(BiPrivateKey.EXPONENT, key.Exponent);
         }
 
         [Fact]

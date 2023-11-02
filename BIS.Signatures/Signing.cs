@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BIS.Signatures.Utils;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using Pbo = BIS.PBO.PBO;
@@ -15,16 +16,17 @@ namespace BIS.Signatures
             var p = key.ToRSAParameters();
             rsa.ImportParameters(p);
 
+            // Manged cryptography uses Big Endian, but the signatures are stored in Little Endian order
             var sig1 = rsa.SignHash(hash1, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+            Array.Reverse(sig1);
             var sig2 = rsa.SignHash(hash2, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+            Array.Reverse(sig2);
             var sig3 = rsa.SignHash(hash3, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+            Array.Reverse(sig3);
 
             return new BiSign(
                 version,
-                key.Name,
-                key.Length,
-                key.Exponent,
-                key.N,
+                key.ToPublicKey(),
                 sig1,
                 sig2,
                 sig3
@@ -36,11 +38,13 @@ namespace BIS.Signatures
             var (hash1, hash2, hash3) = GetPboHashes(signature.Version, pbo);
 
             using var rsa = RSA.Create();
-            rsa.ImportParameters(key.ToRSAParameters());
+            var p = key.ToRSAParameters();
+            rsa.ImportParameters(p);
 
-            var b1 = rsa.VerifyHash(hash1, signature.Sig1, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
-            var b2 = rsa.VerifyHash(hash2, signature.Sig2, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
-            var b3 = rsa.VerifyHash(hash3, signature.Sig3, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+            // Manged cryptography uses Big Endian, but the signatures are stored in Little Endian order
+            var b1 = rsa.VerifyHash(hash1, signature.Sig1.Reverse().ToArray(), HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+            var b2 = rsa.VerifyHash(hash2, signature.Sig2.Reverse().ToArray(), HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+            var b3 = rsa.VerifyHash(hash3, signature.Sig3.Reverse().ToArray(), HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
             return b1 && b2 && b3;
         }
 

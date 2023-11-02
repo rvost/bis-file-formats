@@ -1,4 +1,5 @@
 ﻿using BIS.Core.Streams;
+using BIS.Signatures.Wincrypt;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
@@ -7,89 +8,55 @@ namespace BIS.Signatures
 {
     public record BiPublicKey
     {
+        private readonly uint _blobLength;
+        private readonly KeyBlobHeader _keyHeader;
+        private readonly RSAPublicKeyBlob _key;
+
         public string Name { get; private set; }
+        public uint BitLength => _key.BitLength;
 
-        public UInt32 Length { get; private set; }
-
-        public UInt32 Exponent { get; private set; }
-
-        public byte[] N { get; private set; }
-
-        public BiPublicKey(string name, uint length, uint exponent, byte[] n)
+        internal BiPublicKey(string name, KeyBlobHeader header, RSAPublicKeyBlob key)
         {
             Name = name;
-            Length = length;
-            Exponent = exponent;
-            N = n;
-        }
-
-        private BiPublicKey()
-        {
-
+            _blobLength = header.BlobLength + key.BlobLength;
+            _keyHeader = header;
+            _key = key;
         }
 
         public static BiPublicKey Read(BinaryReaderEx reader)
         {
             var name = reader.ReadUTF8z();
 
-            var temp = reader.ReadUInt32();
-
-            // unknown
-            reader.ReadUInt32();
-            reader.ReadUInt32();
-            reader.ReadUInt32();
-
             var length = reader.ReadUInt32();
-            var exponent = reader.ReadUInt32();
-
-            if (temp != length / 8 + 20)
+            var header = KeyBlobHeader.Read(reader);
+            if (header.Type != KeyBlobHeader.BLOB_TYPE.PUBLICKEYBLOB)
             {
                 throw new InvalidOperationException();
             }
 
-            var n = reader.ReadBytes((int)length / 8).Reverse().ToArray();
-
-            return new()
+            var key = RSAPublicKeyBlob.Read(reader);
+            
+            if (length != header.BlobLength + key.BlobLength)
             {
-                Name = name,
-                Length = length,
-                Exponent = exponent,
-                N = n
-            };
+                throw new InvalidOperationException();
+            }
+
+            return new(name, header, key);
         }
 
         public void Write(BinaryWriterEx writer)
         {
             writer.WriteAsciiz(Name);
-            writer.Write(Length / 8 + 20);
-
-            // TODO: Use UTF-8 string literals after update to C# 11 
-            var unknown = new byte[] { 0x06, 0x02, 0x00, 0x00, 0x00, 0x24, 0x00, 0x00 };
-            var rsa = new byte[] { 0x52, 0x53, 0x41, 0x31 }; // "RSA1"
-            writer.Write(unknown);
-            writer.Write(rsa);
-
-            writer.Write(Length);
-            writer.Write(Exponent);
-            writer.Write(N.Reverse().ToArray());
+            writer.Write(_blobLength);
+            _keyHeader.Write(writer);
+            _key.Write(writer);
         }
 
         internal RSAParameters ToRSAParameters() =>
             new()
             {
-                Exponent = BiPrivateKey.EXPONENT_BYTES,
-                Modulus = N
+                Exponent = BitConverter.GetBytes(_key.PublicExponent).Take(3).ToArray(),
+                Modulus = _key.Modulus.Reverse().ToArray(),
             };
-
-        public static BiPublicKey FromSignature(BiSign signature)
-        {
-            return new()
-            {
-                Name = signature.Name,
-                Length = signature.Length,
-                Exponent = signature.Exponent,
-                N = signature.N.ToArray()
-            };
-        }
     }
 }
