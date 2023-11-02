@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -8,7 +9,7 @@ namespace BIS.Signatures.Wincrypt
     /// <summary>
     /// <see href="https://github.com/ashelmire/WinCryptoHelp">Reference</see>
     /// </summary>
-    internal sealed class RSAPublicKeyBlob
+    internal sealed class RSAPublicKeyBlob : IEquatable<RSAPublicKeyBlob>
     {
         public static uint SignAlgId => 0x31415352; // RSA1
         public uint BitLength { get; private set; }
@@ -64,5 +65,27 @@ namespace BIS.Signatures.Wincrypt
             Exponent = BitConverter.GetBytes(PublicExponent),
             Modulus = Modulus.Reverse().ToArray(),
         };
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as RSAPublicKeyBlob);
+        }
+
+        public bool Equals(RSAPublicKeyBlob other)
+        {
+            return other is not null &&
+                   BitLength == other.BitLength &&
+                   PublicExponent == other.PublicExponent &&
+                   Enumerable.SequenceEqual(Modulus, other.Modulus);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1475074757;
+            hashCode = hashCode * -1521134295 + BitLength.GetHashCode();
+            hashCode = hashCode * -1521134295 + PublicExponent.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<byte[]>.Default.GetHashCode(Modulus);
+            return hashCode;
+        }
     }
 }

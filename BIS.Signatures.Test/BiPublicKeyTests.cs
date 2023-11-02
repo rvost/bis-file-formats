@@ -40,10 +40,24 @@ namespace BIS.Signatures.Test
             var input = File.OpenRead(@"Resources\Test.bikey");
             var reader = new BinaryReaderEx(input);
             var key = BiPublicKey.Read(reader);
-            
+
             var parameters = key.ToRSAParameters();
             using var rsa = RSA.Create();
             rsa.ImportParameters(parameters);
+        }
+
+        [Fact]
+        public void KeysAreStructurallyEqual()
+        {
+            var keyInput = File.OpenRead(@"Resources\Test.bikey");
+            var keyReader = new BinaryReaderEx(keyInput);
+            var key = BiPublicKey.Read(keyReader);
+
+            var signInput = File.OpenRead(@"Resources\test.pbo.Test.bisign");
+            var signReader = new BinaryReaderEx(signInput);
+            var sign = BiSign.Read(signReader);
+
+            Assert.Equal(key, sign.PublicKey);
         }
     }
 }
