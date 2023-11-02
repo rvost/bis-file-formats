@@ -1,5 +1,6 @@
 ﻿using BIS.Signatures.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using Pbo = BIS.PBO.PBO;
@@ -47,6 +48,10 @@ namespace BIS.Signatures
             var b3 = rsa.VerifyHash(hash3, signature.Sig3.Reverse().ToArray(), HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
             return b1 && b2 && b3;
         }
+
+        public static bool Verify(BiSign signature, Pbo pbo) => Verify(signature.PublicKey, signature, pbo);
+        public static bool Verify(HashSet<BiPublicKey> allowedKeys, BiSign signature, Pbo pbo)
+            => allowedKeys.Contains(signature.PublicKey) && Verify(signature.PublicKey, signature, pbo);
 
         private static byte[] ComputeCombinedHash(params byte[][] data)
         {

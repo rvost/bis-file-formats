@@ -64,5 +64,18 @@ namespace BIS.Signatures.Test
 
             Assert.True(res);
         }
+
+        [Fact]
+        public void CanVerifyWithAllowedKeys()
+        {
+            var allowedKeysHaveKey = new HashSet<BiPublicKey>(new[] { v3.PublicKey, BiPrivateKey.Generate("Foo").ToPublicKey() });
+            var allowedKeysNoKey = new HashSet<BiPublicKey>(new[] { BiPrivateKey.Generate("Foo").ToPublicKey() });
+            
+            var haveKeyResult = Signing.Verify(allowedKeysHaveKey, v3, pbo);
+            var noKeyResult = Signing.Verify(allowedKeysNoKey, v3, pbo);
+
+            Assert.True(haveKeyResult);
+            Assert.False(noKeyResult);
+        }
     }
 }

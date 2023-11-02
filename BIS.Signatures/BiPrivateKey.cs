@@ -1,6 +1,7 @@
 ﻿using BIS.Core.Streams;
 using BIS.Signatures.Wincrypt;
 using System;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 
@@ -65,6 +66,8 @@ namespace BIS.Signatures
             return new(name, header, key);
         }
 
+        public static BiPrivateKey Read(Stream input) => Read(new BinaryReaderEx(input));
+
         public void Write(BinaryWriterEx writer)
         {
             writer.WriteAsciiz(Name);
@@ -72,6 +75,8 @@ namespace BIS.Signatures
             _keyHeader.Write(writer);
             _key.Write(writer);
         }
+
+        public void Write(Stream output) => Write(new BinaryWriterEx(output));
 
         public BiPublicKey ToPublicKey()
         {
