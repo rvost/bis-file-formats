@@ -2,23 +2,58 @@
 using BIS.Signatures.Wincrypt;
 using System;
 using System.IO;
-using System.Linq;
 
 namespace BIS.Signatures
 {
+    /// <summary>
+    /// Represents BIS PBO signature.
+    /// </summary>
     public record BiSign
     {
         private readonly CryptoApiBlob _sig1;
         private readonly CryptoApiBlob _sig2;
         private readonly CryptoApiBlob _sig3;
 
+        /// <summary>
+        /// Represents the public key of the signing authority.
+        /// </summary>
         public BiPublicKey PublicKey { get; private set; }
+        /// <summary>
+        /// Represent the name of the signing authority.
+        /// </summary>
         public string Name => PublicKey.Name;
+        /// <summary>
+        /// Represents version of the algorithm that was used to generate the signature.
+        /// </summary>
         public BiSignVersion Version { get; private set; }
+        /// <summary>
+        /// Represents the signature of the PBO checksum.
+        /// </summary>
         public byte[] Sig1 => _sig1.Data;
+        /// <summary>
+        /// Represents the second signature.
+        /// <para>
+        /// The signature is computed from the combined PBO checksum and file name hashes, as well as the prefix.
+        /// </para>
+        /// </summary>
         public byte[] Sig2 => _sig2.Data;
+        /// <summary>
+        /// Represents the third signature.
+        /// <para>
+        /// The computation of the hash used for the signature depends on the version of the signing algorithm.
+        /// </para>
+        /// </summary>
         public byte[] Sig3 => _sig3.Data;
 
+        /// <summary>
+        /// Constructs <c>BiSign</c> from the specified parameters.
+        /// </summary>
+        /// <param name="version">the version of the signing algorithm</param>
+        /// <param name="key">the public key of the signing authority</param>
+        /// <param name="sig1">the signed PBO checksum</param>
+        /// <param name="sig2">the second signed hash</param>
+        /// <param name="sig3">the third signed hash</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public BiSign(BiSignVersion version, BiPublicKey key, byte[] sig1, byte[] sig2, byte[] sig3)
         {
             Version = version;
@@ -37,6 +72,12 @@ namespace BIS.Signatures
             _sig3 = sig3 ?? throw new ArgumentNullException(nameof(sig3));
         }
 
+        /// <summary>
+        /// Constructs a <c>BiSign</c> from the provided input.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// Throws when the <c>BiSign</c> cannot be parsed from the input.
+        /// </exception>
         public static BiSign Read(BinaryReaderEx reader)
         {
             var key = BiPublicKey.Read(reader);
@@ -48,8 +89,12 @@ namespace BIS.Signatures
             return new(version, key, sig1, sig2, sig3);
         }
 
+        /// <inheritdoc cref="Read(BinaryReaderEx)"/>
         public static BiSign Read(Stream input) => Read(new BinaryReaderEx(input));
 
+        /// <summary>
+        /// Writes the <c>BiSign</c> into the provided output.
+        /// </summary>
         public void Write(BinaryWriterEx writer)
         {
             PublicKey.Write(writer);
@@ -59,6 +104,7 @@ namespace BIS.Signatures
             _sig3.Write(writer);
         }
 
+        /// <inheritdoc cref="Write(BinaryWriterEx)"/>
         public void Write(Stream output) => Write(new BinaryWriterEx(output));
     }
 }

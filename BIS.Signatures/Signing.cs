@@ -7,8 +7,18 @@ using Pbo = BIS.PBO.PBO;
 
 namespace BIS.Signatures
 {
+    /// <summary>
+    /// Provides static methods for signing and verifying PBO signatures.
+    /// </summary>
     public static class Signing
     {
+        /// <summary>
+        /// Generates a signature for the PBO file.
+        /// </summary>
+        /// <param name="key">the private key of the signing authority</param>
+        /// <param name="version">the version of the signing algorithm</param>
+        /// <param name="pbo">the PBO file to sign</param>
+        /// <returns></returns>
         public static BiSign Sign(BiPrivateKey key, BiSignVersion version, Pbo pbo)
         {
             var (hash1, hash2, hash3) = GetPboHashes(version, pbo);
@@ -34,6 +44,13 @@ namespace BIS.Signatures
                 );
         }
 
+        /// <summary>
+        /// Verify the PBO signature using the provided public key.
+        /// </summary>
+        /// <param name="key">the public key of the signing authority</param>
+        /// <param name="signature">the signature to verify</param>
+        /// <param name="pbo">the PBO file to verify</param>
+        /// <returns>Returns wether verification was succesfull</returns>
         public static bool Verify(BiPublicKey key, BiSign signature, Pbo pbo)
         {
             var (hash1, hash2, hash3) = GetPboHashes(signature.Version, pbo);
@@ -48,8 +65,21 @@ namespace BIS.Signatures
             var b3 = rsa.VerifyHash(hash3, signature.Sig3.Reverse().ToArray(), HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
             return b1 && b2 && b3;
         }
-
+        
+        /// <summary>
+        /// Verify the PBO signature.
+        /// </summary>
+        /// <param name="signature">the signature to verify</param>
+        /// <param name="pbo">the PBO file to verify</param>
+        /// <returns>Returns wether verification was succesfull</returns>
         public static bool Verify(BiSign signature, Pbo pbo) => Verify(signature.PublicKey, signature, pbo);
+        /// <summary>
+        /// Verify the PBO signature using the set of allowed authorities
+        /// </summary>
+        /// <param name="allowedKeys">the public keys of allowed signing authorities</param>
+        /// <param name="signature">the signature to verify</param>
+        /// <param name="pbo">the PBO file to verify</param>
+        /// <returns></returns>
         public static bool Verify(HashSet<BiPublicKey> allowedKeys, BiSign signature, Pbo pbo)
             => allowedKeys.Contains(signature.PublicKey) && Verify(signature.PublicKey, signature, pbo);
 

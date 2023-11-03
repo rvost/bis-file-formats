@@ -5,9 +5,19 @@ using Pbo = BIS.PBO.PBO;
 
 namespace BIS.Signatures
 {
+    /// <summary>
+    /// Provides extension methods for reading and calculating the checksums of <see cref="BIS.PBO.PBO"/>
+    /// </summary>
     public static class PboExtensions
     {
-
+        /// <summary>
+        /// Calculates PBO checksum.
+        /// <para>
+        /// The SHA-1 hash of the file content is used as the checksum.
+        /// </para>
+        /// </summary>
+        /// <param name="pbo"></param>
+        /// <returns>The computed checksum</returns>
         public static byte[] CalculateChecksum(this Pbo pbo)
         {
             using var buffer = new MemoryStream();
@@ -18,6 +28,13 @@ namespace BIS.Signatures
             using var sha = SHA1.Create();
             return sha.ComputeHash(buffer);
         }
+
+        /// <summary>
+        /// Reads PBO checksum from the file.
+        /// </summary>
+        /// <param name="pbo"></param>
+        /// <returns>The PBO checksum</returns>
+        /// <exception cref="InvalidOperationException">Throws when the file does not contain a checksum.</exception>
         public static byte[] ReadChecksum(this Pbo pbo)
         {
             var fs = pbo.PBOFileStream;

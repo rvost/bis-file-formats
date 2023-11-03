@@ -2,21 +2,35 @@
 using BIS.Signatures.Wincrypt;
 using System;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 
 namespace BIS.Signatures
 {
+    /// <summary>
+    /// Represents BIS private key without the cryptographic implementation details.
+    /// </summary>
     public record BiPrivateKey
     {
-        public const UInt32 DEFAULT_EXPONENT = 65537;
-        public const UInt32 DEFAULT_LENGTH = 1024;
+        /// <summary>
+        /// The RSA public exponent is used in the BIS tools.
+        /// </summary>
+        public const uint DEFAULT_EXPONENT = 65537;
+        /// <summary>
+        /// The key length, in bits, used in the BIS tools.
+        /// </summary>
+        public const uint DEFAULT_LENGTH = 1024;
 
         private readonly uint _blobLength;
         private readonly KeyBlobHeader _keyHeader;
         private readonly RSAPrivateKeyBlob _key;
 
+        /// <summary>
+        /// Represent the name of the signing authority.
+        /// </summary>
         public string Name { get; private set; }
+        /// <summary>
+        /// Represents the size of the key in <c>bits</c>.
+        /// </summary>
         public uint BitLength => _key.BitLength;
 
         internal BiPrivateKey(string name, KeyBlobHeader header, RSAPrivateKeyBlob key)
@@ -27,6 +41,11 @@ namespace BIS.Signatures
             _key = key;
         }
 
+        /// <summary>
+        /// Creates a new key with the specified parameters.
+        /// </summary>
+        /// <param name="name">the name of the signing authority.</param>
+        /// <param name="length">the size of the key in bits.</param>
         public static BiPrivateKey Generate(string name, int length = (int)DEFAULT_LENGTH)
         {
             using var csp = new RSACryptoServiceProvider((int)length);
@@ -45,6 +64,12 @@ namespace BIS.Signatures
             }
         }
 
+        /// <summary>
+        /// Constructs a <c>BiPrivateKey</c> from the provided input.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// Throws when the <c>BiPrivateKey</c> cannot be parsed from the input.
+        /// </exception>
         public static BiPrivateKey Read(BinaryReaderEx reader)
         {
             var name = reader.ReadUTF8z();
@@ -66,8 +91,12 @@ namespace BIS.Signatures
             return new(name, header, key);
         }
 
+        /// <inheritdoc cref="Read(BinaryReaderEx)"/>
         public static BiPrivateKey Read(Stream input) => Read(new BinaryReaderEx(input));
 
+        /// <summary>
+        /// Writes the <c>BiPrivateKey</c> into the provided output in BIS format.
+        /// </summary>
         public void Write(BinaryWriterEx writer)
         {
             writer.WriteAsciiz(Name);
@@ -76,8 +105,12 @@ namespace BIS.Signatures
             _key.Write(writer);
         }
 
+        /// <inheritdoc cref="Write(BinaryWriterEx)"/>
         public void Write(Stream output) => Write(new BinaryWriterEx(output));
 
+        /// <summary>
+        /// Creates a corresponding public key.
+        /// </summary>
         public BiPublicKey ToPublicKey()
         {
             var header = KeyBlobHeader.GetRSAHeader();

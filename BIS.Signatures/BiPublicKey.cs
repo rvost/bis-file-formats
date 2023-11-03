@@ -7,13 +7,23 @@ using System.Security.Cryptography;
 
 namespace BIS.Signatures
 {
+    /// <summary>
+    /// Represents BIS public key without the cryptographic implementation details.
+    /// </summary>
     public record BiPublicKey
     {
         private readonly uint _blobLength;
         private readonly KeyBlobHeader _keyHeader;
         private readonly RSAPublicKeyBlob _key;
 
+        /// <summary>
+        /// Represent the name of the signing authority.
+        /// </summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Represents the size of the key in <c>bits</c>.
+        /// </summary>
         public uint BitLength => _key.BitLength;
 
         internal BiPublicKey(string name, KeyBlobHeader header, RSAPublicKeyBlob key)
@@ -24,6 +34,12 @@ namespace BIS.Signatures
             _key = key;
         }
 
+        /// <summary>
+        /// Constructs a <c>BiPublicKey</c> from the provided input.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// Throws when the <c>BiPublicKey</c> cannot be parsed from the input.
+        /// </exception>
         public static BiPublicKey Read(BinaryReaderEx reader)
         {
             var name = reader.ReadUTF8z();
@@ -45,8 +61,12 @@ namespace BIS.Signatures
             return new(name, header, key);
         }
 
+        /// <inheritdoc cref="Read(BinaryReaderEx)"/>
         public static BiPublicKey Read(Stream input) => Read(new BinaryReaderEx(input));
 
+        /// <summary>
+        /// Writes the <c>BiPublicKey</c> into the provided output in BIS format.
+        /// </summary>
         public void Write(BinaryWriterEx writer)
         {
             writer.WriteAsciiz(Name);
@@ -55,6 +75,7 @@ namespace BIS.Signatures
             _key.Write(writer);
         }
 
+        /// <inheritdoc cref="Write(BinaryWriterEx)"/>
         public void Write(Stream output) => Write(new BinaryWriterEx(output));
 
         internal RSAParameters ToRSAParameters() =>
