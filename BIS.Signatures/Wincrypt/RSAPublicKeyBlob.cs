@@ -84,8 +84,22 @@ namespace BIS.Signatures.Wincrypt
             int hashCode = 1475074757;
             hashCode = hashCode * -1521134295 + BitLength.GetHashCode();
             hashCode = hashCode * -1521134295 + PublicExponent.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<byte[]>.Default.GetHashCode(Modulus);
+            hashCode = hashCode * -1521134295 + ComputeHash(Modulus);
             return hashCode;
+        }
+
+        private static int ComputeHash(params byte[] data)
+        {
+            unchecked
+            {
+                const int p = 16777619;
+                int hash = (int)2166136261;
+
+                for (int i = 0; i < data.Length; i++)
+                    hash = (hash ^ data[i]) * p;
+
+                return hash;
+            }
         }
     }
 }

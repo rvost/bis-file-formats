@@ -57,6 +57,7 @@ namespace BIS.Signatures.Test
             var signReader = new BinaryReaderEx(signInput);
             var sign = BiSign.Read(signReader);
 
+            Assert.Equal(key.GetHashCode(), sign.PublicKey.GetHashCode());
             Assert.Equal(key, sign.PublicKey);
         }
     }
