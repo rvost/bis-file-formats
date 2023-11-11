@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
 using BIS.Core.Math;
 using BIS.Core.Streams;
 
 namespace BIS.WRP
 {
-    public class EditableWrpObject
+    public sealed class EditableWrpObject
     {
         public static EditableWrpObject Dummy = new EditableWrpObject()
         {
@@ -25,11 +23,19 @@ namespace BIS.WRP
 
         }
 
-        public EditableWrpObject(BinaryReaderEx input)
+        internal EditableWrpObject(BinaryReaderEx input, Dictionary<string, string> models)
         {
             Transform = new Matrix4P(input);
             ObjectID = input.ReadInt32();
             Model = input.ReadAscii32();
+            if (models.TryGetValue(Model, out var model))
+            {
+                Model = model;
+            }
+            else
+            {
+                models.Add(Model, Model);
+            }
         }
 
         public Matrix4P Transform { get; set; }
