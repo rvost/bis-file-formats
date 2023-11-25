@@ -6,7 +6,7 @@ namespace BIS.Core.Streams
     {
         private static MemoryStream MakeBuffer(Stream stream)
         {
-            var ms = new MemoryStream((int)stream.Length);
+            var ms = stream.CanSeek ? new MemoryStream((int)stream.Length) : new MemoryStream();
             stream.CopyTo(ms);
             ms.Position = 0;
             return ms;
@@ -30,7 +30,7 @@ namespace BIS.Core.Streams
         public static T ReadNoBuffer<T>(Stream input) where T : IReadObject, new()
         {
             var o = new T();
-            o.Read(new BinaryReaderEx(MakeBuffer(input)));
+            o.Read(new BinaryReaderEx(input));
             return o;
         }
 
@@ -38,7 +38,7 @@ namespace BIS.Core.Streams
         {
             using (var input = File.OpenRead(filename))
             {
-                return Read<T>(input);
+                return ReadNoBuffer<T>(input);
             }
         }
 

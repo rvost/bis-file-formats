@@ -1,4 +1,5 @@
-﻿using BIS.Core.Streams;
+﻿using System.Collections.Generic;
+using BIS.Core.Streams;
 
 namespace BIS.P3D.ODOL
 {
@@ -6,7 +7,9 @@ namespace BIS.P3D.ODOL
 	{
 		internal Section(BinaryReaderEx input, int version)
 		{
-			FaceLowerIndex = input.ReadInt32();
+            isShortFaceIndices = (version < 69);
+
+            FaceLowerIndex = input.ReadInt32();
 			FaceUpperIndex = input.ReadInt32();
 			MinBoneIndex = input.ReadInt32();
 			BonesCount = input.ReadInt32();
@@ -36,7 +39,9 @@ namespace BIS.P3D.ODOL
 			}
 		}
 
-		public int FaceLowerIndex { get; }
+        private readonly bool isShortFaceIndices;
+
+        public int FaceLowerIndex { get; }
 		public int FaceUpperIndex { get; }
 		public int MinBoneIndex { get; }
 		public int BonesCount { get; }
@@ -81,5 +86,24 @@ namespace BIS.P3D.ODOL
 			}
 		}
 
-	}
+        public IEnumerable<Polygon> GetFaces(Polygon[] faces)
+        {
+            uint position = 0u;
+            uint sizeOfFace3 = isShortFaceIndices ? 8u : 16u;
+            uint padOfFace4 = isShortFaceIndices ? 2u : 4u;
+
+			for (var index = 0; index < faces.Length && position < FaceUpperIndex; ++index)
+			{
+				if (position >= FaceLowerIndex && position < FaceUpperIndex)
+				{
+					yield return faces[index];
+				}
+				position += sizeOfFace3;
+				if (faces[index].VertexIndices.Length == 4)
+				{
+					position += padOfFace4;
+				}
+			}
+        }
+    }
 }

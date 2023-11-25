@@ -2,7 +2,7 @@
 
 namespace BIS.PBO
 {
-    internal class PBOFileExisting : IPBOFileEntry
+    public class PBOFileExisting : IPBOFileEntry
     {
         private readonly FileEntry fileEntry;
         private readonly PBO pbo;
@@ -22,6 +22,8 @@ namespace BIS.PBO
         public bool IsCompressed => fileEntry.IsCompressed;
 
         public int DiskSize => fileEntry.DataSize;
+
+        public string PboFile => pbo.PBOFilePath;
 
         public Stream OpenRead()
         {

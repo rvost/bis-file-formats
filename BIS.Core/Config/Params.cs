@@ -111,9 +111,20 @@ namespace BIS.Core.Config
         {
             return Entries.OfType<ParamClass>().FirstOrDefault(c => c.Name == name);
         }
+
         public T[] GetArray<T>(string name)
         {
             return Entries.OfType<ParamArray>().FirstOrDefault(c => c.Name == name)?.ToArray<T>();
+        }
+
+        public T GetValue<T>(string name)
+        {
+            var entry = Entries.OfType<ParamValue>().FirstOrDefault(c => c.Name == name);
+            if (entry != null)
+            {
+                return entry.Get<T>();
+            }
+            return default;
         }
 
         private void ReadCore(BinaryReaderEx input)

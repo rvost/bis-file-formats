@@ -56,6 +56,8 @@ namespace BIS.P3D.MLOD
                     return MapType.Fence;
                 case "rock":
                     return MapType.Rock;
+                case "river":
+                    return MapType.River;
             }
             return MapType.Hide;
         }

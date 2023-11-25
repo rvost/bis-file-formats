@@ -41,6 +41,7 @@
 		SolarPowerPlant,
 		WavePowerPlant,
 		WindPowerPlant,
+		River=44,
 		Unkwown = 255
     }
 }
