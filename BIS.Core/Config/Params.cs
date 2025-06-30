@@ -109,22 +109,32 @@ namespace BIS.Core.Config
 
         public ParamClass GetClass(string name)
         {
-            return Entries.OfType<ParamClass>().FirstOrDefault(c => c.Name == name);
+            return Entries.OfType<ParamClass>().FirstOrDefault(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         public T[] GetArray<T>(string name)
         {
-            return Entries.OfType<ParamArray>().FirstOrDefault(c => c.Name == name)?.ToArray<T>();
+            return Entries.OfType<ParamArray>().FirstOrDefault(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase))?.ToArray<T>();
         }
 
         public T GetValue<T>(string name)
         {
-            var entry = Entries.OfType<ParamValue>().FirstOrDefault(c => c.Name == name);
+            var entry = Entries.OfType<ParamValue>().FirstOrDefault(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase));
             if (entry != null)
             {
                 return entry.Get<T>();
             }
             return default;
+        }
+
+        public T GetValue<T>(string name, T defaultValue)
+        {
+            var entry = Entries.OfType<ParamValue>().FirstOrDefault(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase));
+            if (entry != null)
+            {
+                return entry.Get<T>();
+            }
+            return defaultValue;
         }
 
         private void ReadCore(BinaryReaderEx input)

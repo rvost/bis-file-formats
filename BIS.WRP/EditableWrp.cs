@@ -58,10 +58,10 @@ namespace BIS.WRP
                     }
                 } while (len != 0);
             }
-
+            var cache = new Dictionary<string, string>();
             while (!input.HasReachedEnd)
             {
-                Objects.Add(new EditableWrpObject(input));
+                Objects.Add(new EditableWrpObject(input, cache));
             }
         }
 

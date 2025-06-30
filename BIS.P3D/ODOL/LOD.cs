@@ -152,7 +152,7 @@ namespace BIS.P3D.ODOL
         public int Special { get; }
         public bool VertexBoneRefIsSimple { get; }
         public TrackedArray<int> Clip { get; }
-		internal UVSet[] UvSets { get; }
+		public UVSet[] UvSets { get; }
         public TrackedArray<Vector3PCompressed> NormalsCompressed { get; }
         public TrackedArray<Tuple<Vector3PCompressed, Vector3PCompressed>> STCoordsCompressed { get; }
         public TrackedArray<Vector3P> Normals { get; }

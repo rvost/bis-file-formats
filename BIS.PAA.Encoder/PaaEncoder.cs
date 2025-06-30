@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using BCnEncoder.Shared;
+using BIS.Core;
 using BIS.Core.Streams;
 using Microsoft.Toolkit.HighPerformance;
 
@@ -91,19 +92,13 @@ namespace BIS.PAA.Encoder
 
             writer.Write(type == PAAType.DXT5 ? (ushort)0xff05 : (ushort)0xff01);
 
-            writer.WriteAscii("GGATCGVA", 8);
+            writer.WriteAscii("GGATCGVA", 8); 
             writer.Write((uint)4);
-            writer.Write(avg.r);
-            writer.Write(avg.g);
-            writer.Write(avg.b);
-            writer.Write(avg.a);
+            new PackedColor(avg.r, avg.g, avg.b, avg.a).Write(writer);
 
             writer.WriteAscii("GGATCXAM", 8);
             writer.Write((uint)4);
-            writer.Write(max.r);
-            writer.Write(max.g);
-            writer.Write(max.b);
-            writer.Write(max.a);
+            new PackedColor(max.r, max.g, max.b, max.a).Write(writer);
 
             if (type == PAAType.DXT5)
             {

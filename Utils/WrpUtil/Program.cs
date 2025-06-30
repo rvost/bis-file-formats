@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using BIS.Core.Config;
 using BIS.Core.Streams;
 using BIS.P3D;
+using BIS.P3D.ODOL;
 using BIS.PBO;
 using BIS.WRP;
 using CommandLine;
@@ -217,17 +218,23 @@ namespace WrpUtil
 
         private static void Reduce(EditableWrp editable, string model, double removeRatio)
         {
+            Console.WriteLine($"  Reduce '{model}'");
+
+            var changes = 0;
             var rnd = new Random(model.GetHashCode());
             for (int i = 0; i < editable.Objects.Count; ++i)
             {
                 var obj = editable.Objects[i];
                 if (obj != null &&
-                    string.Equals(model, model, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(obj.Model, model, StringComparison.OrdinalIgnoreCase) &&
                     (removeRatio == 1 || rnd.NextDouble() <= removeRatio))
                 {
                     editable.Objects[i] = null;
+                    changes++;
                 }
             }
+            Console.WriteLine($"  -> {changes} changes");
+            Console.WriteLine();
         }
 
         private static void Replace(EditableWrp editable, string initial, string replacement, string altShiftString, string xShiftString, string zShiftString, bool autoFixAltitude)
@@ -248,9 +255,9 @@ namespace WrpUtil
 
             if ((string.IsNullOrEmpty(altShiftString) || !float.TryParse(altShiftString, NumberStyles.Any, CultureInfo.InvariantCulture, out altShift)) && autoFixAltitude)
             {
-                var oldModel = StreamHelper.Read<P3D>(Path.Combine("P:", initial)).ModelInfo;
-                var newModel = StreamHelper.Read<P3D>(Path.Combine("P:", replacement)).ModelInfo;
-                altShift = oldModel.BboxMin.Y - newModel.BboxMin.Y;
+                var oldModel = StreamHelper.Read<ODOL>(Path.Combine("P:", initial)).ModelInfo;
+                var newModel = StreamHelper.Read<ODOL>(Path.Combine("P:", replacement)).ModelInfo;
+                altShift = newModel.BoundingCenter.Y - oldModel.BoundingCenter.Y;
                 Console.WriteLine($"  '{initial}'->'{replacement}' altShift={altShift:0.00} (computed), xShift={xShift:0.00}, zShift={zShift:0.00}");
             }
             else

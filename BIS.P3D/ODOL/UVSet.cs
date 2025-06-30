@@ -1,15 +1,22 @@
-﻿using BIS.Core;
+﻿using System;
+using System.Linq;
+using System.Numerics;
+using BIS.Core;
 using BIS.Core.Streams;
 
 namespace BIS.P3D.ODOL
 {
-	internal class UVSet
+	public sealed class UVSet
 	{
-		public UVSet(BinaryReaderEx input, int version)
+        private readonly bool isDiscretized;
+
+        internal UVSet(BinaryReaderEx input, int version)
 		{
-			if (version >= 45u)
+            isDiscretized = false;
+            if (version >= 45u)
 			{
-				MinU = input.ReadSingle();
+                isDiscretized = true;
+                MinU = input.ReadSingle();
 				MinV = input.ReadSingle();
 				MaxU = input.ReadSingle();
 				MaxV = input.ReadSingle();
@@ -57,5 +64,53 @@ namespace BIS.P3D.ODOL
 				output.WriteCompressed(UvData);
 			}
 		}
-	}
+
+        public Vector2[] GetUV()
+        {
+            double deltaU = 1.0;
+            double deltaV = 1.0;
+            if (isDiscretized)
+            {
+                deltaU = (double)(MaxU - MinU);
+                deltaV = (double)(MaxV - MinV);
+            }
+            if (DefaultFill)
+            {
+                Vector2 value;
+                if (isDiscretized)
+                {
+                    value.X = Scale(BitConverter.ToInt16(DefaultValue, 0), deltaU, MinU);
+                    value.Y = Scale(BitConverter.ToInt16(DefaultValue, 2), deltaV, MinV);
+                }
+                else
+                {
+                    value.X = BitConverter.ToSingle(DefaultValue, 0);
+                    value.Y = BitConverter.ToSingle(DefaultValue, 4);
+                }
+                return Enumerable.Repeat(value, (int)NVertices).ToArray();
+            }
+
+            var uvData = UvData.ToArray();
+            var result = new Vector2[NVertices];
+            for (var pos = 0;  pos < NVertices; pos++)
+            {
+                if (isDiscretized)
+                {
+                    result[pos].X = Scale(BitConverter.ToInt16(uvData, pos * 4), deltaU, MinU);
+                    result[pos].Y = Scale(BitConverter.ToInt16(uvData, pos * 4 + 2), deltaV, MinV);
+                }
+                else
+                {
+                    result[pos].X = BitConverter.ToSingle(uvData, pos * 8);
+                    result[pos].Y =  BitConverter.ToSingle(uvData, pos * 8 + 4);
+                }
+            }
+            return result;
+        }
+
+        private float Scale(short value, double scale, float min)
+        {
+            return (float)(1.52587890625E-05 * (value + short.MaxValue) * scale) + min; // 2 ^ -16
+        }
+    }
 }
