@@ -2,6 +2,14 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>BIS.Formats.SQFC</PackageId>
+		<Authors>Julien Etelain (GrueArbre)</Authors>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<RepositoryUrl>https://github.com/rvost/bis-file-formats</RepositoryUrl>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<EmbedAllSources>true</EmbedAllSources>
+		<DebugType>Embedded</DebugType>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,6 +21,10 @@
 	<ItemGroup>
 		<PackageReference Include="System.Memory" Version="4.6.0" />
 		<ProjectReference Include="..\BIS.Core\BIS.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\LICENSE" Pack="true" PackagePath=""/>
 	</ItemGroup>
   
 </Project>
